@@ -1,0 +1,20 @@
+{
+  "invoice_number": "INV-2025-7882",
+  "date": "05-04-2025",
+  "vendor_name": "Rinku Web Services Pvt. Ltd",
+  "customer_name": "Das Pharmacy",
+  "items": [
+    {
+      "description": "Web hosting (annual plan)",
+      "quantity": 1.0,
+      "unit_price": 12000.0
+    },
+    {
+      "description": "Domain renewwal (.com)",
+      "quantity": 2.0,
+      "unit_price": 850.0
+    }
+  ],
+  "total_amount": 13700.0,
+  "currency": "INR"
+}

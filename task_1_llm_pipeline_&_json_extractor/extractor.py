@@ -61,7 +61,7 @@ def extract(text: str, client: genai.Client) -> Invoice:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Extract structured invoice JSON from a text file.")
-    parser.add_argument("File", type=Path, help="path to a .txt document")
+    parser.add_argument("file", type=Path, help="path to a .txt document")
     args = parser.parse_args()
 
     api_key = os.getenv("GEMINI_API_KEY")
@@ -84,7 +84,7 @@ def main() -> int:
 
     OUTPUT_DIR.mkdir(exist_ok=True)
     out_path = OUTPUT_DIR / f"{args.file.stem}.json"
-    out_path.write_text(invoice.model_drop_json(indent=2), encoding="utf-8")
+    out_path.write_text(invoice.model_dump_json(indent=2), encoding="utf-8")
 
     print(invoice.model_dump_json(indent=2))
     log.info("Saved to %s", out_path)
