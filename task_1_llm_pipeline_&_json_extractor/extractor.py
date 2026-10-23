@@ -73,7 +73,14 @@ def main() -> int:
         log.error("File not found: %s", args.file)
         return 1
 
-    text = args.file.read_text(encoding="utf-8")
+    if args.file.suffix.lower() != ".txt":
+        log.warning("Expected a .txt file, got '%s'. Trying anyway.", args.file.suffix)
+
+    text = args.file.read_text(encoding="utf-8").strip()
+    if not text:
+        log.error("File is empty: %s", args.file)
+        return 1
+
     client = genai.Client(api_key=api_key)
 
     try:

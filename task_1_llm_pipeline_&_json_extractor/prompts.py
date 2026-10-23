@@ -11,6 +11,8 @@ system_instructions = """Your task is to help extract invoice data from the prov
     -> use standard 3 letter ISO codes for currencies like INR, USD or EUR.
     -> provide only the raw JSON data.
     -> please skip any conversational filter, intro text, markdown styling or code blocks.
+    -> If the document lists tax or a discount, put those amounts in tax_amount and discount_amount.
+    -> total_amount is the final amount payable stated on the document.
 """
 
 #2 Few examples
