@@ -1,0 +1,15 @@
+{
+  "invoice_number": "US-902",
+  "date": "14-07-2026",
+  "vendor_name": "CLOUD TOOLS INC.",
+  "customer_name": "Northstar Labs",
+  "items": [
+    {
+      "description": "Cloud subscription",
+      "quantity": 1.0,
+      "unit_price": 199.99
+    }
+  ],
+  "total_amount": 199.99,
+  "currency": "USD"
+}

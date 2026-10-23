@@ -1,0 +1,7 @@
+"""ABC Supplies
+Invoice No: INV-77
+Date: 5 March 2026
+Billed to: Green Stores
+
+Office supplies - 2 x EUR 30.00
+Total due: EUR 60.00"""

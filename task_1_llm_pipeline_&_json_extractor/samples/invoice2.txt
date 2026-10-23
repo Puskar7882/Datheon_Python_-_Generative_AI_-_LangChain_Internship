@@ -1,0 +1,7 @@
+"""FREELANCE INVOICE
+From: Raju Design
+Invoice No: 0087
+Date: 2025/10/03
+
+Logo design - 3 hours @ USD 45.00/hour
+Total: USD 135.00"""

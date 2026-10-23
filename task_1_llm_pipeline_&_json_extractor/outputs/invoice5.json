@@ -1,0 +1,9 @@
+{
+  "invoice_number": "UNKNOWN",
+  "date": "20-10-2026",
+  "vendor_name": "UNKNOWN",
+  "customer_name": null,
+  "items": [],
+  "total_amount": 0.0,
+  "currency": "XXX"
+}

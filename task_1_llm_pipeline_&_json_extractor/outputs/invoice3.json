@@ -1,0 +1,15 @@
+{
+  "invoice_number": "INV-77",
+  "date": "05-03-2026",
+  "vendor_name": "ABC Supplies",
+  "customer_name": "Green Stores",
+  "items": [
+    {
+      "description": "Office supplies",
+      "quantity": 2.0,
+      "unit_price": 30.0
+    }
+  ],
+  "total_amount": 60.0,
+  "currency": "EUR"
+}

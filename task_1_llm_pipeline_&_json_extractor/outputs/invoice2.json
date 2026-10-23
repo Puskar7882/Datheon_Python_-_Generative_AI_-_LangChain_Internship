@@ -1,0 +1,15 @@
+{
+  "invoice_number": "0087",
+  "date": "03-10-2025",
+  "vendor_name": "Raju Design",
+  "customer_name": null,
+  "items": [
+    {
+      "description": "Logo design",
+      "quantity": 3.0,
+      "unit_price": 45.0
+    }
+  ],
+  "total_amount": 135.0,
+  "currency": "USD"
+}
