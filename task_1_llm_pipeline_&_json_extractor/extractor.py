@@ -63,13 +63,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Extract structured invoice JSON from a text file.")
     parser.add_argument("file", type=Path, help="path to a .txt document")
     args = parser.parse_args()
+    MAX_CHARS = 50_000
 
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         log.error("GEMINI_API_KEY not found. Copy .env.example to .env and add your key.")
         return 1
 
-    if not args.file.exists():
+    if not args.file.is_file():
         log.error("File not found: %s", args.file)
         return 1
 
