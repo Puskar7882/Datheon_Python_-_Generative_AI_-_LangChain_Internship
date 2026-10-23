@@ -63,7 +63,8 @@ def format_examples() -> str:
     blocks = []
     for i, ex in enumerate(examples, start=1):
         blocks.append(
-            f"### Example {i}\nDocument:\n{ex['input']}\n\n"
+            f"### Example {i}\n"
+            f"Document:\n{ex['input']}\n\n"
             f"JSON:\n{json.dumps(ex['output'], indent=2)}"
         )
         return "\n\n".join(blocks)
