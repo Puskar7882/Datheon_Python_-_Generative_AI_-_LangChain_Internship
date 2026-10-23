@@ -86,3 +86,4 @@ def build_prompt(document_text: str, previous_error: str | None = None) -> str:
         )
     prompt += f"### Now extract from this document\nDocument:\n{document_text}\n\nJSON:"    
     return prompt    
+
