@@ -85,6 +85,10 @@ def build_prompt(document_text: str, previous_error: str | None = None) -> str:
             f"{previous_error}\n"
             "Fix the problem and return corrected JSON.\n\n"
         )
-    prompt += f"### Now extract from this document\nDocument:\n{document_text}\n\nJSON:"    
+    prompt += (
+        "### Now extract from this document\n"
+        f"Document:\n{document_text}\n\n"
+        "Return only the JSON object:"
+    )  
     return prompt    
 
