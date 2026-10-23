@@ -1,0 +1,8 @@
+ """Rinku Web Services Pvt. Ltd
+        Invoice No: INV-2025-7882
+        Date: 5th Apr 2025
+        Billed to: Das Pharmacy
+
+        Web hosting (annual plan)     1 X 12,000.00
+        Domain renewwal (.com)        2 X 850.00
+        Total due: INR 13700.00"""
