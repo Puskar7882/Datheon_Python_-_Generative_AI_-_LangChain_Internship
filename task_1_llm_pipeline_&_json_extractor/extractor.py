@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 import os
 import sys
@@ -25,6 +26,18 @@ MAX_RETRIES = 3
 RETRYABLE_CODES = {429, 500, 503}
 MAX_CHARS = 50_000
 OUTPUT_DIR = Path(__file__).parent / "outputs"
+
+
+class NotAnInvoiceError(Exception):
+    """Raised when the model reports that the document is not an invoice."""
+
+
+def is_rejection(raw: str) -> bool:
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return False
+    return isinstance(data, dict) and data.get("error") == "not_an_invoice"
 
 
 def extract(text: str, client: genai.Client) -> Invoice:
@@ -56,9 +69,15 @@ def extract(text: str, client: genai.Client) -> Invoice:
                 log.warning("Attempt %d: API error %s", attempt, e.code)
             continue
 
-        # Step 2: validate the model's answer
+        raw = response.text or ""
+
+        # Step 2: did the model say this is not an invoice?
+        if is_rejection(raw):
+            raise NotAnInvoiceError("The document does not look like an invoice")
+
+        # Step 3: validate the model's answer
         try:
-            invoice = Invoice.model_validate_json(response.text or "")
+            invoice = Invoice.model_validate_json(raw)
         except ValidationError as e:
             previous_error = str(e)[:1000]
             log.warning("Attempt %d failed validation: %s", attempt, previous_error)
@@ -106,7 +125,7 @@ def main() -> int:
 
     try:
         invoice = extract(text, client)
-    except (RuntimeError, errors.APIError) as e:
+    except (NotAnInvoiceError, RuntimeError, errors.APIError) as e:
         log.error("Could not process %s: %s", args.file.name, e)
         return 1
 

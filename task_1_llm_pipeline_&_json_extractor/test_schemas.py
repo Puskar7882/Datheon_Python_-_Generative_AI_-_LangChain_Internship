@@ -34,3 +34,12 @@ def test_tax_is_included_in_total():
 def test_empty_items_rejected():
     with pytest.raises(ValidationError):
         Invoice(**{**VALID, "items": []})
+
+def test_placeholder_vendor_rejected():
+    with pytest.raises(ValidationError):
+        Invoice(**{**VALID, "vendor_name": "UNKNOWN"})
+
+
+def test_xxx_currency_rejected():
+    with pytest.raises(ValidationError):
+        Invoice(**{**VALID, "currency": "XXX"})        

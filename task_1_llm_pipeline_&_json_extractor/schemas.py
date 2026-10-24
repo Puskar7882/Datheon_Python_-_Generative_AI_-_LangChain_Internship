@@ -48,6 +48,21 @@ class Invoice(BaseModel):
             )
         return self
 
+    @field_validator("invoice_number", "vendor_name")
+    @classmethod
+    def not_a_placeholder(cls, value: str) -> str:
+        PLACEHOLDERS = {"", "unknown", "n/a", "na", "none", "null"}
+        if value.strip().lower() in PLACEHOLDERS:
+            raise ValueError("must be a value found in the document, not a placeholder")
+        return value
+
+    @field_validator("currency")
+    @classmethod
+    def currency_not_xxx(cls, value: str) -> str:
+        if value == "XXX":
+            raise ValueError("currency must be a real ISO code found in the document")
+        return value
+
 
 if __name__ == "__main__":
     print(Invoice.model_json_schema())
