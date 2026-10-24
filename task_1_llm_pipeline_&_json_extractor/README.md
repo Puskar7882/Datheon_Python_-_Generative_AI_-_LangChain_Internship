@@ -6,21 +6,38 @@ retrying with the error message when it isn't.
 
 ## How it works
 
+**Data flow**
 ```
 text file -> build_prompt() -> Gemini API -> JSON -> Pydantic validation -> Invoice -> outputs/*.json
                                                           | (fails)
                                               retry with the error fed back (max 3)
+```
 
+**Control flow**
+```
 main()
-  ├─ check API key + file exist        (fail fast, clear message)
+  ├─ validate input (key, file, encoding, empty, size)   fail fast, clear message
   ├─ read file, create client
   └─ extract()  ── loop up to 3 times ──┐
         build_prompt(text, previous_error)
         call Gemini
         validate with Pydantic
-          ├─ OK → return Invoice  ─────────────→ save to outputs/
+          ├─ OK → return Invoice ──────────→ save to outputs/
           ├─ ValidationError → store error → loop again (prompt now includes it)
-          └─ APIError → retryable? sleep and loop : raise                                       
+          └─ APIError → retryable? sleep and loop : raise
+```
+```mermaid
+flowchart TD
+    A[Text file] --> B[Validate input]
+    B --> C[build_prompt]
+    C --> D[Gemini API]
+    D -->|API error 429/500/503| E[Wait, then retry]
+    D -->|Other API error| X[Stop with error]
+    D -->|JSON| F[Pydantic validation]
+    E --> C
+    F -->|Valid| G[Save to outputs/]
+    F -->|ValidationError| H[Add error to prompt]
+    H --> C
 ```
 
 1. **Prompt**: rules + schema + two few shot examples + the document.
@@ -61,12 +78,38 @@ python extractor.py samples/invoice1.txt
 
 **Input** (`samples/invoice1.txt`):
 ```
-<<PASTE YOUR REAL invoice1.txt>>
+ """Rinku Web Services Pvt. Ltd
+        Invoice No: INV-2025-7882
+        Date: 5th Apr 2025
+        Billed to: Das Pharmacy
+
+        Web hosting (annual plan)     1 X 12,000.00
+        Domain renewwal (.com)        2 X 850.00
+        Total due: INR 13700.00"""
 ```
 
 **Output** (`outputs/invoice1.json`):
 ```json
-<<PASTE YOUR REAL invoice1.json>>
+{
+  "invoice_number": "INV-2025-7882",
+  "date": "05-04-2025",
+  "vendor_name": "Rinku Web Services Pvt. Ltd",
+  "customer_name": "Das Pharmacy",
+  "items": [
+    {
+      "description": "Web hosting (annual plan)",
+      "quantity": 1.0,
+      "unit_price": 12000.0
+    },
+    {
+      "description": "Domain renewwal (.com)",
+      "quantity": 2.0,
+      "unit_price": 850.0
+    }
+  ],
+  "total_amount": 13700.0,
+  "currency": "INR"
+}
 ```
 
 ## Validation rules
@@ -79,7 +122,7 @@ python extractor.py samples/invoice1.txt
 | Currency is a 3-letter code | regex | Caught a bug where the model returned `1.0` |
 | Items + tax - discount = total (within 0.01) | `model_validator` | Catches misread numbers |
 
-Run the tests with `pip install pytest` then `pytest -v`. <<5>> tests pass.
+Run the tests with `pip install pytest` then `pytest -v`. 5 tests pass.
 
 ## Results on sample documents
 

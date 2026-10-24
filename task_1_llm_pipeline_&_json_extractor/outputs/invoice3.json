@@ -10,6 +10,8 @@
       "unit_price": 30.0
     }
   ],
+  "tax_amount": null,
+  "discount_amount": null,
   "total_amount": 60.0,
   "currency": "EUR"
 }

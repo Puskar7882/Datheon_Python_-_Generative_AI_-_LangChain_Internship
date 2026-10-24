@@ -10,6 +10,8 @@
       "unit_price": 45.0
     }
   ],
+  "tax_amount": null,
+  "discount_amount": null,
   "total_amount": 135.0,
   "currency": "USD"
 }

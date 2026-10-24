@@ -10,6 +10,8 @@
       "unit_price": 199.99
     }
   ],
+  "tax_amount": null,
+  "discount_amount": null,
   "total_amount": 199.99,
   "currency": "USD"
 }

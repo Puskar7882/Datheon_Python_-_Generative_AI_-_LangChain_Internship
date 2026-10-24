@@ -13,6 +13,7 @@ system_instructions = """Your task is to help extract invoice data from the prov
     -> please skip any conversational filter, intro text, markdown styling or code blocks.
     -> If the document lists tax or a discount, put those amounts in tax_amount and discount_amount.
     -> total_amount is the final amount payable stated on the document.
+    -> If the document is not an invoice, return exactly {"error": "not_an_invoice"} and nothing else.
 """
 
 #2 Few examples
@@ -58,6 +59,11 @@ examples = [
             "total_amount": 255.0,
             "currency": "USD",
         },
+    },
+    {
+        "input": """Hi Rohan, are we still meeting on Friday at 4pm?
+        Let me know if the conference room is free.""",
+            "output": {"error": "not_an_invoice"},
     },
 ]
 
