@@ -42,4 +42,6 @@ def test_placeholder_vendor_rejected():
 
 def test_xxx_currency_rejected():
     with pytest.raises(ValidationError):
-        Invoice(**{**VALID, "currency": "XXX"})        
+        Invoice(**{**VALID, "currency": "XXX"})
+        
+                
