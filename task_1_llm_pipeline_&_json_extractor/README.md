@@ -151,7 +151,7 @@ INFO | Attempt 3 succeeded
 
 Attempt 1 was the honest answer: `null` everywhere. The retries pushed the model to
 fill every field anyway. By attempt 3 it returned `"UNKNOWN"`, currency `"XXX"` and
-a fake line item, and validation passed. **Passing validation did not mean the data
+a fake line item and validation passed. **Passing validation did not mean the data
 was true.**
 
 **Fix:** the prompt now tells the model to answer `{"error": "not_an_invoice"}` for
@@ -165,7 +165,7 @@ ERROR | Could not process invoice5.txt: The document does not look like an invoi
 ## Design decisions
 
 - **Schema generated into the prompt** from `Invoice.model_json_schema()`, so the schema and prompt can't drift apart.
-- **`temperature=0`**, because extraction should be repeatable, not creative.
+- **`temperature=0`**, because extraction should be repeatable not creative.
 - **Optional fields** (`customer_name`, `tax_amount`, `discount_amount`), so the model isn't pushed to invent values.
 - **An honest way out.** A required field schema with no refusal path caused the fabricated output shown above.
 - **Date format DD-MM-YYYY** to match Indian invoices. ISO (`YYYY-MM-DD`) would be better for databases.
