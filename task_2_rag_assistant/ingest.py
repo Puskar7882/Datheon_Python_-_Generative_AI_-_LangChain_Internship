@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 from langchain_core.documents import Document
 from pypdf import PdfReader
@@ -10,11 +11,19 @@ MIN_CHARS = 100
 SKIP_INDEXES = {1, 46, 47}   
 
 
+HEADER_RE = re.compile(r"RAMAYANA\W*FOR\W*CHILDREN", re.IGNORECASE)
+
+def clean_text(text: str) -> str:
+    """Remove the running page header and turn wrapped lines into one flowing paragraph."""
+    text = HEADER_RE.sub(" ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def load_pages(pdf_path: Path) -> list[Document]:
     reader = PdfReader(str(pdf_path))
     documents = []
     for index, page in enumerate(reader.pages):
-        text = (page.extract_text() or "").strip()
+        text = clean_text(page.extract_text() or "")
         if index in SKIP_INDEXES or len(text) < MIN_CHARS:
             continue
         documents.append(
