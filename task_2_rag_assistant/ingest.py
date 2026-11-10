@@ -14,8 +14,8 @@ SKIP_INDEXES = {1, 46, 47}
 HEADER_RE = re.compile(r"RAMAYANA\W*FOR\W*CHILDREN", re.IGNORECASE)
 
 def clean_text(text: str) -> str:
-    """Remove the running page header and turn wrapped lines into one flowing paragraph."""
     text = HEADER_RE.sub(" ", text)
+    text = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", text)
     return re.sub(r"\s+", " ", text).strip()
 
 
