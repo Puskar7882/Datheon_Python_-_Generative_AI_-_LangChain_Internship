@@ -64,3 +64,37 @@ def answer_question(question: str, store, client: genai.Client) -> dict:
     retrieved = {d.metadata["page"] for d in docs}
     cited = {int(p) for p in re.findall(r"\[p\.\s*(\d+)\]", answer)}
     return {"answer": answer, "pages": sorted(cited & retrieved)}
+
+
+def build_prompt(question: str, docs: list[Document], history: list[dict] | None = None) -> str:
+    """Context + recent chat turns + the new question."""
+    turns = ""
+    if history:
+        lines = [f"{m['role'].capitalize()}: {m['content']}" for m in history]
+        turns = "Conversation so far:\n" + "\n".join(lines) + "\n\n"
+    return f"Context:\n{format_context(docs)}\n\n{turns}Question: {question}\nAnswer:"
+
+
+def stream_generate(prompt: str, client: genai.Client):
+    """Yield the answer text piece by piece as Gemini produces it."""
+    stream = client.models.generate_content_stream(
+        model=MODEL,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_INSTRUCTION,
+            temperature=0,
+        ),
+    )
+    for chunk in stream:
+        if chunk.text:
+            yield chunk.text
+
+
+def finalize(answer: str, docs: list[Document]) -> dict:
+    """Same citation checks as answer_question, for an already-complete answer."""
+    answer = answer.strip()
+    if not answer or answer.startswith(NOT_FOUND):
+        return {"answer": NOT_FOUND, "pages": []}
+    retrieved = {d.metadata["page"] for d in docs}
+    cited = {int(p) for p in re.findall(r"\[p\.\s*(\d+)\]", answer)}
+    return {"answer": answer, "pages": sorted(cited & retrieved)}

@@ -11,7 +11,7 @@ Each task lives in its own folder with its own README, setup steps, and tests.
 |---|---|---|---|
 | [Task 1: Structured LLM Pipeline & JSON Extractor](./task_1_llm_pipeline_%26_json_extractor) | Extracts invoice data from unstructured text into validated JSON with corrective retries and a "not an invoice" path | Gemini, Pydantic | Done |
 | [Task 2: Document Q&A Assistant (RAG)](./task_2_rag_assistant) | Answers questions strictly from a PDF, cites the page and says "I don't know" when the document has no answer | ChromaDB, local embeddings, Gemini | Done |
-| Task 4: Streamlit Chatbot | Web UI with streaming and memory | Streamlit | Planned |
+| [Task 4: Streamlit Chatbot](./task4_streamlit_chatbot) | Browser chat over the Task 2 RAG pipeline with streaming, chat memory and page citations | Streamlit | Done |
 
 ## Highlights
 
@@ -50,6 +50,11 @@ python extractor.py samples/invoice1.txt
 cd task_2_rag_assistant
 pip install -r requirements.txt
 python app.py "Why did Kaikeyi ask for two boons?"
+
+# Task 4 (reuses Task 2 so set that up first)
+cd task4_streamlit_chatbot
+pip install -r requirements.txt
+streamlit run streamlit_app.py
 ```
 
 Both tasks need a free Gemini API key from [Google AI Studio](https://aistudio.google.com/). Copy `.env.example` to `.env` in the task folder and set `GEMINI_API_KEY`. The `.env` file is git-ignored and never committed.
