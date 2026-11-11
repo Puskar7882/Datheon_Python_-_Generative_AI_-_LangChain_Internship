@@ -26,11 +26,20 @@ Each task lives in its own folder with its own README, setup steps, and tests.
 .
 ├── task_1_llm_pipeline_&_json_extractor/
 │   ├── extractor.py, schemas.py, prompts.py
+│   ├── test_schemas.py, test_extractor.py
 │   ├── samples/, outputs/
+│   ├── requirements.txt
 │   └── README.md
 ├── task_2_rag_assistant/
 │   ├── ingest.py, chunking.py, vector_store.py, rag.py, app.py
+│   ├── test_rag.py
 │   ├── data/                  # put your own PDF here
+│   ├── requirements.txt
+│   └── README.md
+├── task_4_streamlit_chatbot/
+│   ├── streamlit_app.py       # chat UI, reuses the Task 2 modules
+│   ├── Screenshot/            # demo image used in its README
+│   ├── requirements.txt
 │   └── README.md
 ├── .env.example
 └── .gitignore
